@@ -1,5 +1,9 @@
 <template>
-  <q-page padding> Hello </q-page>
+  <q-page padding>
+    <TransactionsHistoryTable />
+  </q-page>
 </template>
 
-<script setup></script>
+<script setup>
+import { TransactionsHistoryTable } from "widgets/TransactionsHistoryTable";
+</script>

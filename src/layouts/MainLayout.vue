@@ -16,23 +16,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { DrawerMenu } from "../shared/ui/DrawerMenu";
-
-const menu = ref(true);
-
-// const drawer = ref(false);
-
-const handleMenu = (e) => {
-  if (menu.value) {
-    menu.value = false;
-
-    // notice we have registered an event with capture flag;
-    // we need to stop further propagation as this click is
-    // intended for switching drawer to "normal" mode only
-    e.stopPropagation();
-  }
-};
+import { DrawerMenu } from "shared/ui/DrawerMenu";
 
 const linksList = [
   {

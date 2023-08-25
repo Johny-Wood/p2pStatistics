@@ -9,6 +9,7 @@
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
 const { configure } = require("quasar/wrappers");
+const path = require("path");
 
 module.exports = configure(function (/* ctx */) {
   return {
@@ -52,6 +53,12 @@ module.exports = configure(function (/* ctx */) {
       // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
 
       publicPath: "/p2pStatistics/",
+      alias: {
+        widgets: path.join(__dirname, "./src/widgets"),
+        entities: path.join(__dirname, "./src/entities"),
+        features: path.join(__dirname, "./src/features"),
+        shared: path.join(__dirname, "./src/shared"),
+      },
       // analyze: true,
       // env: {},
       // rawDefine: {}
@@ -76,7 +83,10 @@ module.exports = configure(function (/* ctx */) {
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
     framework: {
-      config: {},
+      all: "auto",
+      autoImportComponentCase: "combined",
+
+      // config: {},
 
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
@@ -85,11 +95,11 @@ module.exports = configure(function (/* ctx */) {
       // (like functional components as one of the examples),
       // you can manually specify Quasar components/directives to be available everywhere:
       //
-      // components: [],
+      components: ["QTable, QToolbar, QToolbarTitle"],
       // directives: [],
 
       // Quasar plugins
-      plugins: [],
+      // plugins: [],
     },
 
     // animations: 'all', // --- includes all animations
