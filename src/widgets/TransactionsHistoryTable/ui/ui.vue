@@ -1,12 +1,17 @@
 <template>
   <div>
-    <Table :headers="headers" :data="transactionsHistory" />
+    <Table :headers="headers" :data="transactionsHistory">
+      <template v-slot:actions>
+        <AddTransaction />
+      </template>
+    </Table>
   </div>
 </template>
 
 <script setup>
 import { useTransactionHistoryStore } from "stores/transactionsHistoryStore";
 import { Table } from "entities/Table";
+import { AddTransaction } from "features/transactions-history";
 
 const transactionsHistory = useTransactionHistoryStore().transactionsHistory;
 

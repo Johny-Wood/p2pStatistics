@@ -6,8 +6,28 @@
       title="Калькулятор Спреда"
       :rows="data"
       :columns="headers"
+      separator="cell"
       row-key="id"
     >
+      <template v-slot:top>
+        <slot name="actions"></slot>
+
+        <!-- <q-btn color="primary" label="Add row" /> -->
+        <!-- <q-btn class="q-ml-sm" color="primary" label="Remove row" /> -->
+        <!-- <q-space /> -->
+        <!-- <q-input -->
+        <!--   borderless -->
+        <!--   dense -->
+        <!--   debounce="300" -->
+        <!--   color="primary" -->
+        <!--   v-model="filter" -->
+        <!-- > -->
+        <!--   <template v-slot:append> -->
+        <!--     <q-icon name="search" /> -->
+        <!--   </template> -->
+        <!-- </q-input> -->
+      </template>
+
       <template v-slot:header="props">
         <q-tr :props="props">
           <q-th auto-width />
