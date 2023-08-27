@@ -1,3 +1,4 @@
+
 <template>
   <div class="q-pa-md">
     <q-table
@@ -9,11 +10,25 @@
       separator="cell"
       row-key="id"
     >
-      <template v-slot:top>
-        <p class="text-h5">Калькулятор Спреда</p>
-        <q-space />
-        <slot name="actions"></slot>
-      </template>
+      <!-- <template v-slot:top> -->
+      <!-- <p class="text-h5">Калькулятор Спреда</p> -->
+      <!-- <q-space /> -->
+      <!-- <slot name="actions"></slot> -->
+
+      <!-- <q-btn color="primary" label="Add row" /> -->
+      <!-- <q-btn class="q-ml-sm" color="primary" label="Remove row" /> -->
+      <!-- <q-input -->
+      <!--   borderless -->
+      <!--   dense -->
+      <!--   debounce="300" -->
+      <!--   color="primary" -->
+      <!--   v-model="filter" -->
+      <!-- > -->
+      <!--   <template v-slot:append> -->
+      <!--     <q-icon name="search" /> -->
+      <!--   </template> -->
+      <!-- </q-input> -->
+      <!-- </template> -->
 
       <template v-slot:header="props">
         <q-tr :props="props">
@@ -39,7 +54,7 @@
 
           <q-td key="currency" :props="props">
             {{ props.row.currency }}
-            <q-popup-edit v-model="props.row.currency" v-slot="scope">
+            <q-popup-edit v-model="props.row.currency" auto-save v-slot="scope">
               <q-select
                 label="Что купил"
                 v-model="scope.value"
@@ -138,24 +153,6 @@
                 autofocus
                 @keyup.enter="scope.set"
               />
-            </q-popup-edit>
-          </q-td>
-
-          <q-td key="date" :props="props">
-            {{ props.row.date }}
-            <q-popup-edit
-              v-model.number="props.row.date"
-              auto-save
-              v-slot="scope"
-            >
-              <q-date v-model="props.row.date" />
-              <!-- <q-input -->
-              <!--   type="number" -->
-              <!--   v-model="scope.value" -->
-              <!--   dense -->
-              <!--   autofocus -->
-              <!--   @keyup.enter="scope.set" -->
-              <!-- /> -->
             </q-popup-edit>
           </q-td>
 

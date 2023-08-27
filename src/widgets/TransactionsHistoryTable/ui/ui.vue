@@ -2,7 +2,10 @@
   <div>
     <Table :headers="headers" :data="transactionsHistory">
       <template v-slot:actions>
-        <AddTransaction />
+        <div class="q-gutter-md">
+          <RepeatTransaction />
+          <AddTransaction />
+        </div>
       </template>
     </Table>
   </div>
@@ -11,18 +14,26 @@
 <script setup>
 import { useTransactionHistoryStore } from "stores/transactionsHistoryStore";
 import { Table } from "entities/Table";
-import { AddTransaction } from "features/transactions-history";
+import {
+  AddTransaction,
+  RepeatTransaction,
+} from "features/transactions-history";
+import { watch } from "vue";
 
 const transactionsHistory = useTransactionHistoryStore().transactionsHistory;
+
+watch(transactionsHistory, (newTransactionsHistory) => {
+  console.log(newTransactionsHistory);
+});
 
 // transactionsHistory.add({ label: "hi" });
 
 const headers = [
   {
-    name: "name",
+    name: "currency",
     required: true,
     label: "Что купил",
-    align: "left",
+    align: "center",
     field: "currency",
     // field: (row) => row.name,
     format: (val) => `${val}`,
@@ -35,18 +46,40 @@ const headers = [
     field: "buy_where",
     sortable: true,
   },
-  { name: "buy_price", label: "Цена", field: "buy_price", sortable: true },
-  { name: "buy_amount", label: "Кол-во", field: "buy_amount", sortable: true },
+  {
+    name: "buy_price",
+    align: "center",
+    label: "Цена",
+    field: "buy_price",
+    sortable: true,
+  },
+  {
+    name: "buy_amount",
+    align: "center",
+    label: "Кол-во",
+    field: "buy_amount",
+    sortable: true,
+  },
   {
     name: "sell_price",
+    align: "center",
+
     label: "Цена продажи",
     field: "sell_price",
     sortable: true,
   },
   {
     name: "sell_amount",
+    align: "center",
     label: "Кол-во проданно",
     field: "sell_amount",
+    sortable: true,
+  },
+  {
+    name: "date",
+    align: "center",
+    label: "Дата",
+    field: "date",
     sortable: true,
   },
 ];

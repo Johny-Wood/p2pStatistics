@@ -3,24 +3,26 @@ import { defineStore } from "pinia";
 export const useTransactionHistoryStore = defineStore("transactionHistory", {
   state: () => ({
     transactionsHistory: [
-      // {
-      //   currency: "USDT",
-      //   buy_where: "Binance",
-      //   buy_price: 100,
-      //   buy_amount: 24,
-      //   sell_price: 110,
-      //   sell_amount: 24,
-      //   spread: [
-      //     {
-      //       buy_price: 100,
-      //       buy_amount: 24,
-      //       sell_price: 110,
-      //       sell_amount: 24,
-      //       result: 0.23,
-      //     },
-      //   ],
-      //   id: 0,
-      // },
+      {
+        currency: null,
+        buy_where: null,
+        buy_price: null,
+        buy_amount: null,
+        sell_price: null,
+        sell_amount: null,
+        date: "2023/01/01",
+        id: 0,
+        // spread: [
+        // {
+        //   buy_price: 100,
+        //   buy_amount: 24,
+        //   sell_price: 110,
+        //   sell_amount: 24,
+        //   result: 0.23,
+        // },
+        // ],
+        // id: 0,
+      },
       // {
       //   currency: "USDT",
       //   buy_where: "Binance",
@@ -103,15 +105,30 @@ export const useTransactionHistoryStore = defineStore("transactionHistory", {
       //   id: 9,
       // },
     ],
-    nextId: 0,
+    nextId: 1,
   }),
   // getters: {
   //   doubleCount: (state) => state.counter * 2,
   // },
   actions: {
-    add(item) {
-      // console.log(item);
-      this.transactionsHistory.push({ ...item, id: this.nextId++ });
+    add() {
+      this.transactionsHistory.push({
+        currency: null,
+        buy_where: null,
+        buy_price: null,
+        buy_amount: null,
+        sell_price: null,
+        sell_amount: null,
+        spread: [],
+        id: this.nextId++,
+      });
+    },
+    repeat() {
+      this.transactionsHistory.push({
+        ...this.transactionsHistory[this.transactionsHistory.length - 1],
+        sell_price: null,
+        id: this.nextId++,
+      });
     },
   },
 });
