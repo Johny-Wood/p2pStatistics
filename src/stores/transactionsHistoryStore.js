@@ -1,28 +1,30 @@
 import { defineStore } from "pinia";
+import { calcSpread } from "src/shared/lib/spread";
 
 export const useTransactionHistoryStore = defineStore("transactionHistory", {
   state: () => ({
     transactionsHistory: [
-      {
-        currency: null,
-        buy_where: null,
-        buy_price: null,
-        buy_amount: null,
-        sell_price: null,
-        sell_amount: null,
-        date: "2023/01/01",
-        id: 0,
-        // spread: [
-        // {
-        //   buy_price: 100,
-        //   buy_amount: 24,
-        //   sell_price: 110,
-        //   sell_amount: 24,
-        //   result: 0.23,
-        // },
-        // ],
-        // id: 0,
-      },
+      // {
+      //   currency: "",
+      //   buy_where: "",
+      //   buy_price: "",
+      //   buy_amount: "",
+      //   sell_price: "",
+      //   sell_amount: "",
+      //   date: "2023/01/01",
+      //   id: 0,
+      //   spread: [],
+      // spread: [
+      // {
+      //   buy_price: 100,
+      //   buy_amount: 24,
+      //   sell_price: 110,
+      //   sell_amount: 24,
+      //   result: 0.23,
+      // },
+      // ],
+      // id: 0,
+      // },
       // {
       //   currency: "USDT",
       //   buy_where: "Binance",
@@ -106,28 +108,68 @@ export const useTransactionHistoryStore = defineStore("transactionHistory", {
       // },
     ],
     nextId: 1,
+    currentTransactionsHistory: [
+      {
+        currency: "",
+        buy_where: "",
+        buy_price: "",
+        buy_amount: "",
+        sell_price: "",
+        sell_amount: "",
+        date: "2023/01/01",
+        id: 1,
+        spread: [],
+      },
+    ],
+    cNextId: 2,
   }),
   // getters: {
   //   doubleCount: (state) => state.counter * 2,
   // },
   actions: {
-    add() {
+    add(transaction) {
+      const buy = transaction.buy_price;
+      const sell = transaction.sell_price;
+
+      const id = this.nextId++;
       this.transactionsHistory.push({
-        currency: null,
-        buy_where: null,
-        buy_price: null,
-        buy_amount: null,
-        sell_price: null,
-        sell_amount: null,
-        spread: [],
-        id: this.nextId++,
+        ...transaction,
+        spread: [{ result: calcSpread(buy, sell) }],
+        id: id,
       });
     },
-    repeat() {
-      this.transactionsHistory.push({
-        ...this.transactionsHistory[this.transactionsHistory.length - 1],
-        sell_price: null,
-        id: this.nextId++,
+    set(transaction, index) {
+      const buy = transaction.buy_price;
+      const sell = transaction.sell_price;
+
+      this.transactionsHistory[index] = {
+        ...transaction,
+        spread: [{ result: calcSpread(buy, sell) }],
+      };
+    },
+    addCurrentTransaction() {
+      const transaction = {
+        currency: "",
+        buy_where: "",
+        buy_price: "",
+        buy_amount: "",
+        sell_price: "",
+        sell_amount: "",
+        date: "2023/01/01",
+        id: this.cNextId++,
+        spread: [],
+      };
+
+      this.currentTransactionsHistory.push(transaction);
+    },
+    repeatCurrentTransaction() {
+      this.currentTransactionsHistory.push({
+        ...this.currentTransactionsHistory[
+          this.currentTransactionsHistory.length - 1
+        ],
+        sell_price: "",
+        spread: [],
+        id: this.cNextId++,
       });
     },
   },

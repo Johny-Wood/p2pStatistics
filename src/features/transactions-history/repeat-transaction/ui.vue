@@ -6,14 +6,14 @@
 import { useTransactionHistoryStore } from "stores/transactionsHistoryStore";
 
 const transactionsHistory = useTransactionHistoryStore();
-console.log(
-  transactionsHistory.transactionsHistory[
-    transactionsHistory.transactionsHistory.length - 1
-  ]
-);
+// console.log(
+//   transactionsHistory.transactionsHistory[
+//     transactionsHistory.transactionsHistory.length - 1
+//   ]
+// );
 
 const handleRepeatTransaction = () => {
-  transactionsHistory.repeat();
+  transactionsHistory.repeatCurrentTransaction();
 };
 </script>
 

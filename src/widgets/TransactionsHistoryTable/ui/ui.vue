@@ -1,6 +1,9 @@
 <template>
   <div>
-    <Table :headers="headers" :data="transactionsHistory">
+    <Table
+      :headers="headers"
+      :data="transactionsHistory.currentTransactionsHistory"
+    >
       <template v-slot:actions>
         <div class="q-gutter-md">
           <RepeatTransaction />
@@ -18,15 +21,40 @@ import {
   AddTransaction,
   RepeatTransaction,
 } from "features/transactions-history";
-import { watch } from "vue";
+import { watch, ref, reactive, onMounted } from "vue";
+import { getTruthyIndices } from "shared/lib/transactions-validation";
 
-const transactionsHistory = useTransactionHistoryStore().transactionsHistory;
+const transactionsHistory = useTransactionHistoryStore();
 
-watch(transactionsHistory, (newTransactionsHistory) => {
-  console.log(newTransactionsHistory);
+const truthyIndices = ref([]);
+
+watch(transactionsHistory.currentTransactionsHistory, (newTransaction) => {
+  truthyIndices.value = getTruthyIndices(newTransaction);
+
+  if (truthyIndices.value.length > 0) {
+    const isRowAdded = transactionsHistory.transactionsHistory.find((item) => {
+      return (
+        item.id ==
+        newTransaction[truthyIndices.value[truthyIndices.value.length - 1]].id
+      );
+    });
+
+    if (isRowAdded) {
+      transactionsHistory.set(
+        newTransaction[truthyIndices.value[truthyIndices.value.length - 1]],
+        truthyIndices.value[truthyIndices.value.length - 1]
+      );
+    } else {
+      transactionsHistory.add(
+        newTransaction[truthyIndices.value[truthyIndices.value.length - 1]]
+      );
+    }
+  }
 });
 
-// transactionsHistory.add({ label: "hi" });
+watch(transactionsHistory.transactionsHistory, (newTransaction) => {
+  console.log(transactionsHistory.transactionsHistory);
+});
 
 const headers = [
   {

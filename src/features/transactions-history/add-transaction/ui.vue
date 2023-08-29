@@ -13,19 +13,22 @@
 </template>
 
 <script setup>
-import { useDialogPluginComponent } from "quasar";
+// import { useDialogPluginComponent } from "quasar";
 import { useTransactionHistoryStore } from "stores/transactionsHistoryStore";
 // import { TransactionForm } from "entities/TransactionForm";
 
 // defineEmits([...useDialogPluginComponent.emits]);
 
+// defineEmits(["onNewRow"]);
 const transactionsHistory = useTransactionHistoryStore();
 
 // const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } =
 //   useDialogPluginComponent();
 
 const handleAddTransaction = () => {
-  transactionsHistory.add();
+  transactionsHistory.addCurrentTransaction();
+  // emit("onNewRow");
+  // transactionsHistory.add();
   // console.log(transaction);
   // onDialogOK();
 };

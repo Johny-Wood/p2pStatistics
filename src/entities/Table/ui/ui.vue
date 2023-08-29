@@ -42,9 +42,9 @@
             <q-popup-edit v-model="props.row.currency" v-slot="scope">
               <q-select
                 label="Что купил"
-                v-model="scope.value"
                 use-input
                 input-debounce="0"
+                v-model="scope.value"
                 @new-value="createNewCurrencyOption"
                 :options="filteredCurrencyOptions"
                 @filter="filterCurrencyOptionsFn"
@@ -62,11 +62,8 @@
 
           <q-td key="buy_where" :props="props">
             {{ props.row.buy_where }}
-            <q-popup-edit
-              v-model="props.row.buy_where"
-              auto-save
-              v-slot="scope"
-            >
+            <!-- auto-save -->
+            <q-popup-edit v-model="props.row.buy_where" v-slot="scope">
               <q-input
                 type="string"
                 v-model="scope.value"
@@ -78,11 +75,9 @@
           </q-td>
           <q-td key="buy_price" :props="props">
             {{ props.row.buy_price }}
-            <q-popup-edit
-              v-model.number="props.row.buy_price"
-              auto-save
-              v-slot="scope"
-            >
+            <!-- auto-save -->
+            <!-- v-model.number="modelValue.history[0].buy_price" -->
+            <q-popup-edit v-model.number="props.row.buy_price" v-slot="scope">
               <q-input
                 type="number"
                 v-model="scope.value"
@@ -94,11 +89,8 @@
           </q-td>
           <q-td key="buy_amount" :props="props">
             {{ props.row.buy_amount }}
-            <q-popup-edit
-              v-model.number="props.row.buy_amount"
-              auto-save
-              v-slot="scope"
-            >
+            <!-- auto-save -->
+            <q-popup-edit v-model.number="props.row.buy_amount" v-slot="scope">
               <q-input
                 type="number"
                 v-model="scope.value"
@@ -110,11 +102,8 @@
           </q-td>
           <q-td key="sell_price" :props="props">
             {{ props.row.sell_price }}
-            <q-popup-edit
-              v-model.number="props.row.sell_price"
-              auto-save
-              v-slot="scope"
-            >
+            <!-- auto-save -->
+            <q-popup-edit v-model.number="props.row.sell_price" v-slot="scope">
               <q-input
                 type="number"
                 v-model="scope.value"
@@ -126,11 +115,8 @@
           </q-td>
           <q-td key="sell_amount" :props="props">
             {{ props.row.sell_amount }}
-            <q-popup-edit
-              v-model.number="props.row.sell_amount"
-              auto-save
-              v-slot="scope"
-            >
+            <!-- auto-save -->
+            <q-popup-edit v-model.number="props.row.sell_amount" v-slot="scope">
               <q-input
                 type="number"
                 v-model="scope.value"
@@ -141,14 +127,12 @@
             </q-popup-edit>
           </q-td>
 
+          <!-- auto-save -->
           <q-td key="date" :props="props">
             {{ props.row.date }}
-            <q-popup-edit
-              v-model.number="props.row.date"
-              auto-save
-              v-slot="scope"
-            >
-              <q-date v-model="props.row.date" />
+            <q-popup-edit v-model.number="props.row.date" v-slot="scope">
+              <!-- v-model="props.row.date" -->
+              <q-date v-model="modelValue.history[0].date" />
               <!-- <q-input -->
               <!--   type="number" -->
               <!--   v-model="scope.value" -->
@@ -175,12 +159,12 @@
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
-            <div
-              class="text-left"
-              v-for="(spread, index) in props.row.spread"
-              :key="index"
-            >
-              Конвертация__{{ index + 1 }}: {{ spread?.result }}.
+            <div class="text-left">
+              <!-- v-for="(spread, index) in props.row.spread" -->
+              <!-- :key="index" -->
+              <!-- Конвертация__{{ index + 1 }}: {{ spread?.result }}. -->
+              Конвертация:
+              {{ calcSpread(props?.row?.buy_price, props?.row?.sell_price) }}
             </div>
           </q-td>
         </q-tr>
@@ -189,9 +173,19 @@
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { computed, watch, ref, reactive, onMounted, onUpdated } from "vue";
+import { useTransactionHistoryStore } from "stores/transactionsHistoryStore";
+import { calcSpread } from "src/shared/lib/spread";
 
-const props = defineProps(["data", "headers"]);
+const props = defineProps({
+  data: {
+    default: ["NO DATA"],
+  },
+  headers: {
+    type: Object,
+    default: ["No headers"],
+  },
+});
 
 const currencyOptions = ["USDT", "BTC", "ETH"];
 
